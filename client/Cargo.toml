@@ -1,0 +1,18 @@
+[package]
+name = "simple-chat-client"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+publish = false
+
+[dependencies]
+simple-chat-shared = { path = "../shared" }
+
+prost = "0.12"
+prost-types = "0.12"
+thiserror = "1"
+tokio = { version = "1", features = ["full"] }
+tokio-tungstenite = "0.21"
+
+[features]
+support_tls = ["tokio-tungstenite/rustls-tls-native-roots"]
