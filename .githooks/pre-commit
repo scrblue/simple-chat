@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+echo '### Running `cargo fmt` ###'
+cargo fmt --all --check
+
+# NOTE: Clippy is run automatically on the `shared` crate because the `--no-deps` flag is not used.
+#
+# Similarly, tests do not have to be run for this as the `shared` crate simply defines data types
+# used in the protocol.
+
+echo '### Running without TLS ###'
+cargo clippy --all  --all-targets -- -D warnings
+cargo test --all --all-targets
+
+echo '### Running with TLS ###'
+cargo clippy -p simple-chat-client --all-targets  --features support_tls -- -D warnings
+cargo clippy -p simple-chat-server --all-targets  --features require_tls -- -D warnings
+
+cargo test -p simple-chat-client --all-targets --features support_tls
+cargo test -p simple-chat-server --all-targets --features require_tls
+
+# TODO: Extract this into a function should additional features ever be added so we can test
+# combinations of features without excessive duplication.

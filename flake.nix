@@ -28,9 +28,12 @@
             rust-bin.stable.latest.default
             rust-analyzer
 
-            # Other
+            # Protobuf and LSP
             buf-language-server
             protobuf
+
+            # Other
+            just
           ];
 
           shellHook = ''
