@@ -2,6 +2,8 @@
 name = "simple-chat-server"
 version = "0.1.0"
 edition = "2021"
+license = "MIT"
+publish = false
 
 [dependencies]
 simple-chat-shared = { path = "../shared" }

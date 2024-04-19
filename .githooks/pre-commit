@@ -5,6 +5,9 @@ set -eo pipefail
 echo '### Running `cargo fmt` ###'
 cargo fmt --all --check
 
+echo '### Running `cargo deny check` ###'
+cargo deny check
+
 # NOTE: Clippy is run automatically on the `shared` crate because the `--no-deps` flag is not used.
 #
 # Similarly, tests do not have to be run for this as the `shared` crate simply defines data types

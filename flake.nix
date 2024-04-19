@@ -20,20 +20,19 @@
 
         devShells.default = mkShell {
           buildInputs = [
-            # Rust build requirements
-            openssl
-            pkg-config
-
-            # Rust and LSP
+            # Rust-related
+            cargo-deny
             rust-bin.stable.latest.default
             rust-analyzer
 
-            # Protobuf and LSP
+            # Protobuf-related
             buf-language-server
             protobuf
 
             # Other
             just
+            openssl
+            pkg-config
           ];
 
           shellHook = ''
