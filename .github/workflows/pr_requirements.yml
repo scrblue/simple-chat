@@ -1,0 +1,51 @@
+name: Rust PR Requirements
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  format:
+    name: Formatting check via `cargo fmt --check`
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: rustup update stable && rustup default stable
+      - run: cargo fmt --all --check
+
+  audit:
+    name: Auditing via `cargo deny check`
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: EmbarkStudios/cargo-deny-action@v1
+
+  clippy:
+    name: Linting via `cargo clippy`
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        arguments:
+          - --all
+          - -p simple-chat-client --features support_tls
+          - -p simple-chat-server --features require_tls
+    steps:
+      - uses: actions/checkout@v4
+      - run: rustup update stable && rustup default stable
+      - run: cargo clippy --all-targets ${{ matrix.arguments }} -- -D warnings
+
+  test:
+    name: Testing via `cargo test`
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        arguments:
+          - --all
+          - -p simple-chat-client --features support_tls
+          - -p simple-chat-server --features require_tls
+    steps:
+      - uses: actions/checkout@v4
+      - run: rustup update stable && rustup default stable
+      - run: cargo test --all-targets ${{ matrix.arguments }}
